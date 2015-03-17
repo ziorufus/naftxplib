@@ -16,12 +16,17 @@ import java.util.regex.Pattern;
 
 public class VerbPhraseTenseAnnotator {
 
-	private static List<String> rules = getRules("resources/rules-english.txt");
+	private List<String> rules = new ArrayList<>();
+
+	public VerbPhraseTenseAnnotator(String ruleFile) {
+		rules = getRules(ruleFile);
+	}
+
 	/*static int colChunk = 7;
-	static int colPOS = 6;
-	static int colMorph = 8;
-	static int colLemma = 9;
-	*/
+		static int colPOS = 6;
+		static int colMorph = 8;
+		static int colLemma = 9;
+		*/
 	static int colChunk;
 	static int colPOS;
 	static int colMorph;
@@ -33,7 +38,7 @@ public class VerbPhraseTenseAnnotator {
 	 * @param nbTok the number of tokens contained in the VP
 	 * @return an array with the tense and the aspect
 	 */
-	public static String[] getTenseVP (String [][] tokenvp, int nbTok){
+	public String[] getTenseVP (String [][] tokenvp, int nbTok){
 		String [] tense = new String [2];
 		List<String> subListRules = getRulesNb(nbTok);
 		for(String rCurr : subListRules){
@@ -80,7 +85,7 @@ public class VerbPhraseTenseAnnotator {
 	 * @param nbEltVP = n tokens
 	 * @return list of rules
 	 */
-	public static List<String> getRulesNb (int nbEltVP){
+	public List<String> getRulesNb (int nbEltVP){
 		List<String> subListRules = new ArrayList<String> ();
 		for(String r : rules){
 			int nbEltRule = (r.split(Pattern.quote("+"))).length;
@@ -135,7 +140,7 @@ public class VerbPhraseTenseAnnotator {
 	 * @param lastCol the index of the lastCol in which the tense, aspect and poliraty will be add
 	 * @return
 	 */
-	public static String [][] addTenseAspectVP (String [][] lines, int lastCol){
+	public String [][] addTenseAspectVP (String [][] lines, int lastCol){
 		int j=0;
 		int nbTokVP=0;
 		int indFirstTokVP = 0;
