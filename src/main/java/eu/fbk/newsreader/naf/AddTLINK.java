@@ -50,7 +50,7 @@ public class AddTLINK {
 		}
 	}
 	
-	public static String[][] add_candidate_pairs(String [][] lines, int nbCol, HashMap<String,Integer> intCol){
+    public static String[][] add_candidate_pairs(String [][] lines, int nbCol, HashMap<String,Integer> intCol, boolean allEventT0Pairs){
 		
 		init_col_id(intCol);
 		
@@ -135,7 +135,7 @@ public class AddTLINK {
 						lines[i][colPairs] += lines[i][colEventId]+":"+list_timex.get(l)+":NONE";
 					}
 					//event-t0
-					//if((lines[i][colPOS].startsWith("V") || lines[i][colChunk].endsWith("VP")) && ! lines[i][colTense].matches("((INFINITIVE)|(PRESPART)|(PASTPART))\\+.*")){
+					if(((lines[i][colPOS].startsWith("V") || lines[i][colChunk].endsWith("VP")) && ! lines[i][colTense].matches("((INFINITIVE)|(PRESPART)|(PASTPART))\\+.*")) || allEventT0Pairs){
 					
 						if(lines[i][colPairs] == null){
 							lines[i][colPairs] = "";
@@ -144,7 +144,7 @@ public class AddTLINK {
 							lines[i][colPairs] += "||";
 						}
 						lines[i][colPairs] += lines[i][colEventId]+":"+"tmx0"+":NONE";
-					//}
+					}
 					
 					//main event
 					if (lines[i][colMainVb] != null && lines[i][colMainVb].equals("mainVb")){

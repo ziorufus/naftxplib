@@ -42,14 +42,14 @@ public class MainVerb {
 			String idTerm = "";
 			for (String idFrom : listFrom){
 				if (!listTo.contains(idFrom)){
-					List<String> wordL = termWfL.get(idFrom);
-					for (String word : wordL){
-						mainWord += wfIdL.get(word)+" ";
-					}
-					idTerm = idFrom;
-					if (getSmallestChunk(idTerm,nafFile)[0].endsWith("VP")){
-						termIdMainVerb.add(idTerm);
-					}
+				    //List<String> wordL = termWfL.get(idFrom);
+				    //for (String word : wordL){
+				    //	mainWord += wfIdL.get(word)+" ";
+				    //}
+				    idTerm = idFrom;
+				    //if (getSmallestChunk(idTerm,nafFile)[0].endsWith("VP")){
+				    termIdMainVerb.add(idTerm);
+				    //}
 				}
 			}
 			//System.out.println("main word in sentence "+i+": "+mainWord+" --> "+idTerm);
@@ -138,46 +138,6 @@ public class MainVerb {
 		}
 		return wfIdL;
 	}
-	
-	/**
-	 * Get the smallest chunk in which a word "wid" is
-	 * @param wid
-	 * @param nafFile
-	 * @return An array: [Chunk phrase, chunk id, position of the word in the chunk]
-	 */
-	private static String[] getSmallestChunk (String wid, KAFDocument nafFile) {
-		ListIterator<Chunk> chunkl = nafFile.getChunks().listIterator();
-		int chunk_length = 1000;
-		//String labelChunk = "O";
-		String[] chunkInfo = {"O","c-1","0"};
-		//if(chunkl.hasNext()){
-			//Chunk chunkElt = chunkl.next();
-			//chunkl.previous();
-			while (chunkl.hasNext()) {
-				Chunk chunk = chunkl.next();
-				List<Term> termList = chunk.getSpan().getTargets();
-				ListIterator<Term> tarl = termList.listIterator();
-				
-				Boolean find = false;
-				int ind = 0;
-				while (find == false && tarl.hasNext()){
-					Term tar = tarl.next();
-					if (tar.getId().equals(wid)) {
-						find = true;
-					}
-					ind ++;
-				}
-				if (find == true && chunk_length > termList.size()){
-					chunkInfo[0] = chunk.getPhrase();
-					chunkInfo[1] = chunk.getId();
-					chunkInfo[2] = Integer.toString(ind);
-					chunk_length = termList.size();	
-				}
-			}
-		//}
-		return chunkInfo;
-	}
-	
 	
 	
 	/**
