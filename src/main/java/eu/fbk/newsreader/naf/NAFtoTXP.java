@@ -230,11 +230,11 @@ public class NAFtoTXP {
 		if (inArray(listCol, "event_ref_train")) {
 			nbCol += 2;
 		}
-		if (inArray(listCol, "event")) {
+		/*if (inArray(listCol, "event")) {
 			nbCol += 1;
-		}
+			}*/
 		if ((inArray(listCol, "event") || inArray(listCol, "event_pred") || inArray(listCol, "event_ref")
-				|| inArray(listCol, "event_ref_train")) && !inArray(listCol, "pairs") && !inArray(listCol, "tlink_ref")) {
+				|| inArray(listCol, "event_ref_train")) && !inArray(listCol, "pairs") && !inArray(listCol, "tlink_ref") && !inArray(listCol, "tlink")) {
 			nbCol += 2;
 		}
 			/*else if(inArray(listCol, "dep")){
@@ -307,7 +307,7 @@ public class NAFtoTXP {
 			lines[indLine][indCol++] = "entity";
 		}
 		if (inArray(listCol, "srl") || inArray(listCol, "event") || inArray(listCol, "event_pred") || inArray(listCol, "event_ref") || inArray(listCol, "event_ref_train")) {
-		    if ((inArray(listCol, "event_ref_train") || inArray(listCol, "event")) && !inArray(listCol, "pairs") && !inArray(listCol, "tlink_ref")) {
+		    if ((inArray(listCol, "event_ref_train") || inArray(listCol, "event")) && !inArray(listCol, "pairs") && !inArray(listCol, "tlink_ref") && !inArray(listCol, "tlink")) {
 				lines[indLine][indCol++] = "pred";
 			}
 			lines[indLine][indCol++] = "pred_class";
@@ -341,7 +341,7 @@ public class NAFtoTXP {
 			lines[indLine][indCol++] = "morpho";
 		}
 		if ((inArray(listCol, "event") || inArray(listCol, "event_pred") || inArray(listCol, "event_ref")
-				|| inArray(listCol, "event_ref_train")) && (inArray(listCol, "pairs") || inArray(listCol, "tlink_ref"))) {
+				|| inArray(listCol, "event_ref_train")) && (inArray(listCol, "pairs") || inArray(listCol, "tlink_ref") || inArray(listCol, "tlink"))) {
 			lines[indLine][indCol++] = "tense+aspect+pol";
 			//lines[indLine][indCol++] = "tense";
 			//lines[indLine][indCol++] = "aspect";
