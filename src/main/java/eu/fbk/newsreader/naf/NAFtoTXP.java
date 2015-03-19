@@ -153,7 +153,7 @@ public class NAFtoTXP {
 		}
 
 		if (inArray(listCol, "pairs") && !inArray(listCol, "tlink_ref")) {
-			lines = AddTLINK.add_candidate_pairs(lines, lines[0].length, intCol);
+			lines = AddTLINK.add_candidate_pairs(lines, lines[0].length, intCol, true);
 		}
 
 		if (inArray(listCol, "alink")) {
@@ -230,11 +230,11 @@ public class NAFtoTXP {
 		if (inArray(listCol, "event_ref_train")) {
 			nbCol += 2;
 		}
-		if (inArray(listCol, "event")) {
+		/*if (inArray(listCol, "event")) {
 			nbCol += 1;
-		}
+			}*/
 		if ((inArray(listCol, "event") || inArray(listCol, "event_pred") || inArray(listCol, "event_ref")
-				|| inArray(listCol, "event_ref_train")) && !inArray(listCol, "pairs") && !inArray(listCol, "tlink_ref")) {
+				|| inArray(listCol, "event_ref_train")) && !inArray(listCol, "pairs") && !inArray(listCol, "tlink_ref") && !inArray(listCol, "tlink")) {
 			nbCol += 2;
 		}
 			/*else if(inArray(listCol, "dep")){
@@ -258,7 +258,7 @@ public class NAFtoTXP {
 
 		ListIterator<WF> tokenList = tokenListTemp.listIterator();
 
-		List<String> termIdMainVerb = MainVerb.detect_main_verbs(nafFile);
+		List<String> termIdCandMainVerb = MainVerb.detect_main_verbs(nafFile);
 
 		HashMap<String, String> listConnectives = AddConnectivesClasses.getListConnectives(nafFile);
 
@@ -307,7 +307,7 @@ public class NAFtoTXP {
 			lines[indLine][indCol++] = "entity";
 		}
 		if (inArray(listCol, "srl") || inArray(listCol, "event") || inArray(listCol, "event_pred") || inArray(listCol, "event_ref") || inArray(listCol, "event_ref_train")) {
-			if (inArray(listCol, "event_ref_train") || inArray(listCol, "event")) {
+		    if ((inArray(listCol, "event_ref_train") || inArray(listCol, "event")) && !inArray(listCol, "pairs") && !inArray(listCol, "tlink_ref") && !inArray(listCol, "tlink")) {
 				lines[indLine][indCol++] = "pred";
 			}
 			lines[indLine][indCol++] = "pred_class";
@@ -341,7 +341,7 @@ public class NAFtoTXP {
 			lines[indLine][indCol++] = "morpho";
 		}
 		if ((inArray(listCol, "event") || inArray(listCol, "event_pred") || inArray(listCol, "event_ref")
-				|| inArray(listCol, "event_ref_train")) && (inArray(listCol, "pairs") || inArray(listCol, "tlink_ref"))) {
+				|| inArray(listCol, "event_ref_train")) && (inArray(listCol, "pairs") || inArray(listCol, "tlink_ref") || inArray(listCol, "tlink"))) {
 			lines[indLine][indCol++] = "tense+aspect+pol";
 			//lines[indLine][indCol++] = "tense";
 			//lines[indLine][indCol++] = "aspect";
@@ -751,7 +751,7 @@ public class NAFtoTXP {
 
 				//mainVerb
 				if (inArray(listCol, "main_verb")) {
-					if (termIdMainVerb.contains(termTmp.getId())) {
+				    if (termIdCandMainVerb.contains(termTmp.getId()) && lines[indLine][intCol.get("chunk")].endsWith("VP")) {
 						lines[indLine][intCol.get("main_verb")] = "mainVb";
 					}
 					else {
@@ -1414,7 +1414,7 @@ public class NAFtoTXP {
 					}
 				}
 			}
-			if (find == true && chunk_length > list_chunks.get(chunk).size()) {
+			if (find == true && chunk_length >= list_chunks.get(chunk).size()) {
 				chunkInfo[0] = chunk.split(":")[1];
 				chunkInfo[1] = chunk.split(":")[0];
 				chunkInfo[2] = Integer.toString(ind);
